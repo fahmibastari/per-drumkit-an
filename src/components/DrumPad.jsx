@@ -48,7 +48,7 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
             }}
             onMouseDown={(e) => {
                 // Ignore mouse down if touch happened recently (ghost click)
-                if (Date.now() - lastTouchTime.current < 500) return;
+                if (Date.now() - lastTouchTime.current < 350) return;
                 if (!editMode) trigger();
             }}
             animate={{

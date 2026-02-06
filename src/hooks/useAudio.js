@@ -102,7 +102,8 @@ export const useAudio = () => {
     const playSound = useCallback((id) => {
         const howl = howlsRef.current[id];
         if (howl) {
-            howl.seek(0);
+            // howler manages polyphony automatically if we just play()
+            // seek(0) was cutting off the tail of previous hits
             howl.play();
         }
     }, []);
