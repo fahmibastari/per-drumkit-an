@@ -15,7 +15,7 @@ export default defineConfig({
         description: 'Professional Online Drum Kit & Portfolio',
         theme_color: '#1a1a1a',
         background_color: '#1a1a1a',
-        display: 'standalone',
+        display: 'fullscreen',
         orientation: 'landscape',
         icons: [
           {

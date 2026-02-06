@@ -185,85 +185,27 @@ const DrumMachine = () => {
             touchAction: 'none'
         }}>
             {/* Header / Toolbar */}
-            <div style={{
-                position: 'absolute',
-                top: 0, left: 0, right: 0,
-                height: isMobile ? '60px' : '80px',
-                zIndex: 1000,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: isMobile ? '0 15px' : '0 40px',
-                borderBottom: '1px solid #222',
-                background: 'rgba(17, 17, 17, 0.95)',
-                transition: 'all 0.3s'
-            }}>
-                <div style={{ pointerEvents: 'auto', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    {/* Hamburger Button (Always Visible or Hidden in Edit Mode? kept visible for menu access) */}
-                    {isMobile && (
-                        <button
-                            onClick={() => setIsMenuOpen(true)}
-                            style={{
-                                background: 'transparent', border: 'none',
-                                color: '#d4af37', fontSize: '1.5rem', cursor: 'pointer',
-                                padding: '5px', display: 'flex'
-                            }}
-                        >
-                            <IconMenu size={28} />
-                        </button>
-                    )}
-
-                    {!isMobile && (
+            {!isMobile && (
+                <div style={{
+                    position: 'absolute',
+                    top: 0, left: 0, right: 0,
+                    height: '80px',
+                    zIndex: 1000,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0 40px',
+                    borderBottom: '1px solid #222',
+                    background: 'rgba(17, 17, 17, 0.95)',
+                    transition: 'all 0.3s'
+                }}>
+                    <div style={{ pointerEvents: 'auto', display: 'flex', alignItems: 'center', gap: '15px' }}>
                         <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#d4af37', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', fontWeight: 'bold' }}>D</div>
-                    )}
-
-                    {!isMobile && (
                         <h1 style={{ color: '#eee', margin: 0, fontSize: '1.2rem', fontFamily: 'Inter, sans-serif', fontWeight: '300', letterSpacing: '4px' }}>
                             PERPAHMI<strong style={{ fontWeight: '700', color: '#d4af37' }}>DRUM</strong> <span style={{ fontSize: '0.8rem', opacity: 0.5, letterSpacing: '2px' }}>PRO STUDIO</span>
                         </h1>
-                    )}
-                    {isMobile && !editMode && (
-                        <h1 style={{ color: '#eee', margin: 0, fontSize: '1rem', fontFamily: 'Inter, sans-serif', fontWeight: '300', letterSpacing: '2px' }}>
-                            PERDRUMKITAN
-                        </h1>
-                    )}
-                    {isMobile && editMode && (
-                        <h1 style={{ color: '#d4af37', margin: 0, fontSize: '1rem', fontFamily: 'Inter, sans-serif', fontWeight: '700', letterSpacing: '2px' }}>
-                            EDITING
-                        </h1>
-                    )}
-                </div>
-
-                {/* Mobile Edit Toolbar */}
-                {isMobile && editMode && (
-                    <div style={{ display: 'flex', gap: '15px', pointerEvents: 'auto' }}>
-                        <button
-                            onClick={() => setIsAddWizardOpen(true)}
-                            style={{
-                                background: '#333', border: '1px solid #444',
-                                color: '#d4af37', borderRadius: '50%', width: '36px', height: '36px',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            <IconPlus size={20} />
-                        </button>
-                        <button
-                            onClick={() => setEditMode(false)}
-                            style={{
-                                background: '#d4af37', border: 'none',
-                                color: '#000', borderRadius: '4px',
-                                padding: '5px 15px', fontWeight: 'bold', fontSize: '0.8rem',
-                                display: 'flex', alignItems: 'center', gap: '5px'
-                            }}
-                        >
-                            <IconCheck size={18} /> DONE
-                        </button>
                     </div>
-                )}
 
-                {/* Desktop Menu - Hidden on Mobile */}
-                {!isMobile && (
                     <div style={{ display: 'flex', gap: '20px', pointerEvents: 'auto' }}>
                         {!editMode ? (
                             <>
@@ -375,8 +317,67 @@ const DrumMachine = () => {
                             </>
                         )}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
+
+            {/* Mobile Floating Controls */}
+            {
+                isMobile && (
+                    <>
+                        {/* Floating Menu Button */}
+                        <button
+                            onClick={() => setIsMenuOpen(true)}
+                            style={{
+                                position: 'absolute', top: '15px', left: '15px',
+                                background: 'rgba(0,0,0,0.5)',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                borderRadius: '8px',
+                                color: '#d4af37',
+                                width: '44px', height: '44px',
+                                cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                zIndex: 2000,
+                                backdropFilter: 'blur(5px)'
+                            }}
+                        >
+                            <IconMenu size={24} />
+                        </button>
+
+                        {/* Floating Edit Toolbar */}
+                        {editMode && (
+                            <div style={{
+                                position: 'absolute', top: '15px', right: '15px',
+                                display: 'flex', gap: '10px', zIndex: 2000
+                            }}>
+                                <button
+                                    onClick={() => setIsAddWizardOpen(true)}
+                                    style={{
+                                        background: 'rgba(0,0,0,0.8)', border: '1px solid #d4af37',
+                                        color: '#d4af37', borderRadius: '50%', width: '44px', height: '44px',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <IconPlus size={24} />
+                                </button>
+                                <button
+                                    onClick={() => setEditMode(false)}
+                                    style={{
+                                        background: '#d4af37', border: 'none',
+                                        color: '#000', borderRadius: '8px',
+                                        padding: '0 20px', fontWeight: 'bold', fontSize: '0.9rem',
+                                        display: 'flex', alignItems: 'center', gap: '5px',
+                                        height: '44px',
+                                        boxShadow: '0 4px 10px rgba(0,0,0,0.5)'
+                                    }}
+                                >
+                                    <IconCheck size={20} /> DONE
+                                </button>
+                            </div>
+                        )}
+                    </>
+                )
+            }
 
             {/* Hint */}
             <div style={{
@@ -418,16 +419,18 @@ const DrumMachine = () => {
             </div>
 
             {/* Subtle Grid in Edit Mode */}
-            {editMode && (
-                <div style={{
-                    position: 'absolute', inset: 0,
-                    backgroundImage: 'radial-gradient(#333 1px, transparent 1px)',
-                    backgroundSize: '30px 30px',
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                    opacity: 0.3
-                }} />
-            )}
+            {
+                editMode && (
+                    <div style={{
+                        position: 'absolute', inset: 0,
+                        backgroundImage: 'radial-gradient(#333 1px, transparent 1px)',
+                        backgroundSize: '30px 30px',
+                        pointerEvents: 'none',
+                        zIndex: 0,
+                        opacity: 0.3
+                    }} />
+                )
+            }
 
             <SoundSelector
                 isOpen={!!selectorPadId}
@@ -478,7 +481,7 @@ const DrumMachine = () => {
                 onClear={handleClear}
                 onReset={handleReset}
             />
-        </div>
+        </div >
     );
 };
 

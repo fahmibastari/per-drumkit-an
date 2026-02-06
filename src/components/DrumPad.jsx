@@ -43,6 +43,8 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
                 if (!editMode) trigger();
             }}
             onTouchStart={(e) => {
+                // Prevent ghost click and double firing
+                e.preventDefault();
                 if (!editMode) {
                     trigger();
                 }
