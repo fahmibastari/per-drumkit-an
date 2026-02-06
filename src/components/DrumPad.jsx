@@ -39,13 +39,10 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
         <motion.div
             className="drum-pad-visual"
             style={padStyle}
-            onMouseDown={(e) => {
-                if (!editMode) trigger();
-            }}
-            onTouchStart={(e) => {
-                // Prevent ghost click and double firing
-                e.preventDefault();
+            onPointerDown={(e) => {
                 if (!editMode) {
+                    // Prevent default to stop emulated mouse events and scrolling
+                    e.preventDefault();
                     trigger();
                 }
             }}
