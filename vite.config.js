@@ -19,14 +19,19 @@ export default defineConfig({
         orientation: 'landscape',
         icons: [
           {
-            src: 'pwa-icon.png',
-            sizes: '192x192', // using the same source for simplicity, though real app should have distinct sizes
-            type: 'image/png'
+            src: 'pwa-icon.svg',
+            sizes: '192x192',
+            type: 'image/svg+xml'
           },
           {
-            src: 'pwa-icon.png',
+            src: 'pwa-icon.svg',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/svg+xml'
+          },
+          {
+            src: 'pwa-icon.svg',
+            sizes: 'any',
+            type: 'image/svg+xml'
           }
         ]
       }
