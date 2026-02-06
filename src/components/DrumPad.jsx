@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange, position, color, onEditSound, size = 120 }, ref) => {
     const [isActive, setIsActive] = useState(false);
+    const lastTouchTime = useRef(0);
 
     const trigger = () => {
         if (play) play(sound.id);
@@ -39,12 +40,16 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
         <motion.div
             className="drum-pad-visual"
             style={padStyle}
-            onPointerDown={(e) => {
-                if (!editMode) {
-                    // Prevent default to stop emulated mouse events and scrolling
-                    e.preventDefault();
-                    trigger();
-                }
+            onContextMenu={(e) => e.preventDefault()}
+            onTouchStart={(e) => {
+                // e.preventDefault(); // Might be passive, so we use timestamp lock
+                lastTouchTime.current = Date.now();
+                if (!editMode) trigger();
+            }}
+            onMouseDown={(e) => {
+                // Ignore mouse down if touch happened recently (ghost click)
+                if (Date.now() - lastTouchTime.current < 500) return;
+                if (!editMode) trigger();
             }}
             animate={{
                 scale: isActive ? 0.95 : 1,
