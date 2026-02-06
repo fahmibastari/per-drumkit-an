@@ -184,200 +184,60 @@ const DrumMachine = () => {
             background: '#111', // Matte Black
             touchAction: 'none'
         }}>
-            {/* Header / Toolbar */}
-            {!isMobile && (
-                <div style={{
-                    position: 'absolute',
-                    top: 0, left: 0, right: 0,
-                    height: '80px',
-                    zIndex: 1000,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '0 40px',
-                    borderBottom: '1px solid #222',
-                    background: 'rgba(17, 17, 17, 0.95)',
-                    transition: 'all 0.3s'
-                }}>
-                    <div style={{ pointerEvents: 'auto', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#d4af37', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', fontWeight: 'bold' }}>D</div>
-                        <h1 style={{ color: '#eee', margin: 0, fontSize: '1.2rem', fontFamily: 'Inter, sans-serif', fontWeight: '300', letterSpacing: '4px' }}>
-                            PERPAHMI<strong style={{ fontWeight: '700', color: '#d4af37' }}>DRUM</strong> <span style={{ fontSize: '0.8rem', opacity: 0.5, letterSpacing: '2px' }}>PRO STUDIO</span>
-                        </h1>
-                    </div>
 
-                    <div style={{ display: 'flex', gap: '20px', pointerEvents: 'auto' }}>
-                        {!editMode ? (
-                            <>
-                                <button
-                                    onClick={() => setIsPresetModalOpen(true)}
-                                    style={{
-                                        padding: '10px 24px',
-                                        background: 'transparent',
-                                        border: '1px solid #444',
-                                        color: '#aaa',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer',
-                                        fontSize: '0.8rem',
-                                        letterSpacing: '1px',
-                                        transition: 'all 0.2s'
-                                    }}
-                                    onMouseOver={e => { e.currentTarget.style.borderColor = '#d4af37'; e.currentTarget.style.color = '#d4af37'; }}
-                                    onMouseOut={e => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.style.color = '#aaa'; }}
-                                >
-                                    PRESETS
-                                </button>
-                                <button
-                                    onClick={() => setEditMode(true)}
-                                    style={{
-                                        padding: '10px 24px',
-                                        background: 'transparent',
-                                        border: '1px solid #444',
-                                        color: '#aaa',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer',
-                                        fontSize: '0.8rem',
-                                        letterSpacing: '1px',
-                                        transition: 'all 0.2s'
-                                    }}
-                                    onMouseOver={e => { e.currentTarget.style.borderColor = '#d4af37'; e.currentTarget.style.color = '#d4af37'; }}
-                                    onMouseOut={e => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.style.color = '#aaa'; }}
-                                >
-                                    CUSTOMIZE LAYOUT
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <button
-                                    onClick={() => setIsAddWizardOpen(true)}
-                                    style={{
-                                        padding: '10px 20px',
-                                        background: '#d4af37',
-                                        border: 'none',
-                                        color: '#000',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer',
-                                        fontWeight: '600',
-                                        fontSize: '0.8rem',
-                                        letterSpacing: '1px'
-                                    }}
-                                >
-                                    + ADD PAD
-                                </button>
-                                <button
-                                    onClick={handleClear}
-                                    style={{
-                                        padding: '10px 15px',
-                                        background: 'transparent',
-                                        border: '1px solid #444',
-                                        color: '#888',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer',
-                                        fontSize: '1.2rem'
-                                    }}
-                                    title="Clear All"
-                                    onMouseOver={e => { e.currentTarget.style.borderColor = '#ff4444'; e.currentTarget.style.color = '#ff4444'; }}
-                                    onMouseOut={e => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.style.color = '#888'; }}
-                                >
-                                    🗑️
-                                </button>
-                                <button
-                                    onClick={handleReset}
-                                    style={{
-                                        padding: '10px 20px',
-                                        background: 'transparent',
-                                        border: '1px solid #444',
-                                        color: '#888',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer',
-                                        fontSize: '0.8rem',
-                                        letterSpacing: '1px'
-                                    }}
-                                    onMouseOver={e => { e.currentTarget.style.borderColor = '#fff'; e.currentTarget.style.color = '#fff'; }}
-                                    onMouseOut={e => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.style.color = '#888'; }}
-                                >
-                                    RESET
-                                </button>
-                                <button
-                                    onClick={() => setEditMode(false)}
-                                    style={{
-                                        padding: '10px 24px',
-                                        background: '#fff',
-                                        border: 'none',
-                                        color: '#000',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer',
-                                        fontWeight: '700',
-                                        fontSize: '0.8rem',
-                                        letterSpacing: '1px'
-                                    }}
-                                >
-                                    DONE
-                                </button>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
 
             {/* Mobile Floating Controls */}
-            {
-                isMobile && (
-                    <>
-                        {/* Floating Menu Button */}
-                        <button
-                            onClick={() => setIsMenuOpen(true)}
-                            style={{
-                                position: 'absolute', top: '15px', left: '15px',
-                                background: 'rgba(0,0,0,0.5)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                borderRadius: '8px',
-                                color: '#d4af37',
-                                width: '44px', height: '44px',
-                                cursor: 'pointer',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                zIndex: 2000,
-                                backdropFilter: 'blur(5px)'
-                            }}
-                        >
-                            <IconMenu size={24} />
-                        </button>
+            {/* Floating Menu Button (Always Visible) */}
+            <button
+                onClick={() => setIsMenuOpen(true)}
+                style={{
+                    position: 'absolute', top: '15px', left: '15px',
+                    background: 'rgba(0,0,0,0.5)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '8px',
+                    color: '#d4af37',
+                    width: '44px', height: '44px',
+                    cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 2000,
+                    backdropFilter: 'blur(5px)'
+                }}
+            >
+                <IconMenu size={24} />
+            </button>
 
-                        {/* Floating Edit Toolbar */}
-                        {editMode && (
-                            <div style={{
-                                position: 'absolute', top: '15px', right: '15px',
-                                display: 'flex', gap: '10px', zIndex: 2000
-                            }}>
-                                <button
-                                    onClick={() => setIsAddWizardOpen(true)}
-                                    style={{
-                                        background: 'rgba(0,0,0,0.8)', border: '1px solid #d4af37',
-                                        color: '#d4af37', borderRadius: '50%', width: '44px', height: '44px',
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    <IconPlus size={24} />
-                                </button>
-                                <button
-                                    onClick={() => setEditMode(false)}
-                                    style={{
-                                        background: '#d4af37', border: 'none',
-                                        color: '#000', borderRadius: '8px',
-                                        padding: '0 20px', fontWeight: 'bold', fontSize: '0.9rem',
-                                        display: 'flex', alignItems: 'center', gap: '5px',
-                                        height: '44px',
-                                        boxShadow: '0 4px 10px rgba(0,0,0,0.5)'
-                                    }}
-                                >
-                                    <IconCheck size={20} /> DONE
-                                </button>
-                            </div>
-                        )}
-                    </>
-                )
-            }
+            {/* Floating Edit Toolbar (Always Visible if Edit Mode) */}
+            {editMode && (
+                <div style={{
+                    position: 'absolute', top: '15px', right: '15px',
+                    display: 'flex', gap: '10px', zIndex: 2000
+                }}>
+                    <button
+                        onClick={() => setIsAddWizardOpen(true)}
+                        style={{
+                            background: 'rgba(0,0,0,0.8)', border: '1px solid #d4af37',
+                            color: '#d4af37', borderRadius: '50%', width: '44px', height: '44px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        <IconPlus size={24} />
+                    </button>
+                    <button
+                        onClick={() => setEditMode(false)}
+                        style={{
+                            background: '#d4af37', border: 'none',
+                            color: '#000', borderRadius: '8px',
+                            padding: '0 20px', fontWeight: 'bold', fontSize: '0.9rem',
+                            display: 'flex', alignItems: 'center', gap: '5px',
+                            height: '44px',
+                            boxShadow: '0 4px 10px rgba(0,0,0,0.5)'
+                        }}
+                    >
+                        <IconCheck size={20} /> DONE
+                    </button>
+                </div>
+            )}
 
             {/* Hint */}
             <div style={{
