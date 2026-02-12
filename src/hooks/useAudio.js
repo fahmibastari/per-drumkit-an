@@ -4,8 +4,8 @@ import { Howl } from 'howler';
 const DEFAULT_KIT_MAP = {
     kick: { folder: 'KICKS', index: 0, label: 'Kick', key: ' ' },
     snare: { folder: 'SNARES', index: 0, label: 'Snare', key: 'f' },
-    hat_close: { folder: 'HATS', index: 0, label: 'Hi-Hat Cl', key: 'd' },
-    hat_open: { folder: 'HATS', index: 1, label: 'Hi-Hat Op', key: 's' },
+    hat_close: { folder: 'HATS', index: 0, label: 'Hi-Hat Cl', key: 'd', muteGroup: 1 },
+    hat_open: { folder: 'HATS', index: 1, label: 'Hi-Hat Op', key: 's', muteGroup: 1 },
     tom1: { folder: 'TOMS', index: 0, label: 'Tom 1', key: 'g' },
     tom2: { folder: 'TOMS', index: 1, label: 'Tom 2', key: 'h' },
     tom3: { folder: 'TOMS', index: 2, label: 'Tom 3', key: 'j' },
@@ -100,13 +100,28 @@ export const useAudio = () => {
     }, [sounds, isLoaded]);
 
     const playSound = useCallback((id) => {
+        const sound = sounds.find(s => s.id === id);
+        if (!sound) return;
+
+        // Mute Group Logic (Hi-Hat Choke)
+        if (sound.muteGroup) {
+            sounds.forEach(otherSound => {
+                if (otherSound.id !== id && otherSound.muteGroup === sound.muteGroup) {
+                    const otherHowl = howlsRef.current[otherSound.id];
+                    if (otherHowl) {
+                        otherHowl.stop(); // Cut off the other sound
+                    }
+                }
+            });
+        }
+
         const howl = howlsRef.current[id];
         if (howl) {
             // howler manages polyphony automatically if we just play()
             // seek(0) was cutting off the tail of previous hits
             howl.play();
         }
-    }, []);
+    }, [sounds]);
 
     const resetToDefault = async () => {
         const res = await fetch('/sounds-manifest.json');
@@ -124,7 +139,8 @@ export const useAudio = () => {
                 label: config.label,
                 defaultKey: config.key,
                 fileName: fileName,
-                volume: 1.0
+                volume: 1.0,
+                muteGroup: config.muteGroup || null // Apply default mute group
             };
         });
         setSounds(newKit);

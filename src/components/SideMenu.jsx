@@ -112,7 +112,7 @@ const SideMenu = ({
 
                         {/* Footer */}
                         <div style={{ padding: '20px', borderTop: '1px solid #333', color: '#444', fontSize: '0.7rem', textAlign: 'center', fontFamily: 'Inter' }}>
-                            CYBERDRUM v2.0
+                            PERDRUMKITAN v2.0
                         </div>
                     </motion.div>
                 </>

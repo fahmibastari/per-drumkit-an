@@ -156,18 +156,75 @@ const PadSettingsModal = ({ isOpen, onClose, pad, onUpdate, onDelete, onOpenSoun
                             style={{ width: '100%', cursor: 'pointer', accentColor: '#d4af37' }}
                         />
                     </div>
-                    {/* Layering (Z-Index) */}
                     <div style={{ marginBottom: '25px' }}>
                         <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                            Layer Order: {pad.zIndex || 10}
+                            Layer (Stack Order)
                         </label>
-                        <input
-                            type="range"
-                            min="1" max="50" step="1"
-                            value={pad.zIndex || 10}
-                            onChange={(e) => onUpdate(pad.id, { zIndex: parseInt(e.target.value) })}
-                            style={{ width: '100%', cursor: 'pointer', accentColor: '#d4af37' }}
-                        />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#111', padding: '5px', borderRadius: '4px', border: '1px solid #333' }}>
+                            <button
+                                onClick={() => onUpdate(pad.id, { zIndex: Math.max(1, (pad.zIndex || 10) - 1) })}
+                                style={{
+                                    background: 'transparent', color: '#888', border: '1px solid #444',
+                                    width: '32px', height: '32px', borderRadius: '4px', cursor: 'pointer',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                }}
+                                title="Send Backward"
+                            >
+                                ▼
+                            </button>
+
+                            <div style={{ flex: 1, textAlign: 'center', fontFamily: 'monospace', fontSize: '1rem', color: '#d4af37' }}>
+                                {pad.zIndex || 10}
+                            </div>
+
+                            <button
+                                onClick={() => onUpdate(pad.id, { zIndex: Math.min(100, (pad.zIndex || 10) + 1) })}
+                                style={{
+                                    background: 'transparent', color: '#fff', border: '1px solid #444',
+                                    width: '32px', height: '32px', borderRadius: '4px', cursor: 'pointer',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                }}
+                                title="Bring Forward"
+                            >
+                                ▲
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Mute Group (Choke) */}
+                    <div style={{ marginBottom: '25px' }}>
+                        <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                            Mute Group (Choke)
+                        </label>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#111', padding: '5px', borderRadius: '4px', border: '1px solid #333' }}>
+                            <button
+                                onClick={() => onUpdate(pad.id, { muteGroup: Math.max(0, (pad.muteGroup || 0) - 1) })}
+                                style={{
+                                    background: 'transparent', color: '#888', border: '1px solid #444',
+                                    width: '32px', height: '32px', borderRadius: '4px', cursor: 'pointer',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                }}
+                                title="Previous Group"
+                            >
+                                ▼
+                            </button>
+
+                            <div style={{ flex: 1, textAlign: 'center', fontFamily: 'monospace', fontSize: '1rem', color: pad.muteGroup ? '#ff4444' : '#666' }}>
+                                {pad.muteGroup ? `Group ${pad.muteGroup}` : 'None'}
+                            </div>
+
+                            <button
+                                onClick={() => onUpdate(pad.id, { muteGroup: Math.min(8, (pad.muteGroup || 0) + 1) })}
+                                style={{
+                                    background: 'transparent', color: '#fff', border: '1px solid #444',
+                                    width: '32px', height: '32px', borderRadius: '4px', cursor: 'pointer',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                }}
+                                title="Next Group"
+                            >
+                                ▲
+                            </button>
+                        </div>
                     </div>
 
                     {/* Actions */}

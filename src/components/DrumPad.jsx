@@ -16,6 +16,8 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
         trigger
     }));
 
+    const zIndexVal = (sound.zIndex || 10) + (isActive ? 1000 : 0);
+
     const padStyle = {
         width: `${size}px`,
         height: `${size}px`,
@@ -29,7 +31,7 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
         cursor: editMode ? 'grab' : 'pointer',
         userSelect: 'none',
         touchAction: 'none',
-        zIndex: (sound.zIndex || 10) + (isActive ? 1000 : 0),
+        // zIndex: moved to wrapper
         boxShadow: isActive
             ? '0 0 20px rgba(212, 175, 55, 0.4)'
             : '0 4px 6px rgba(0,0,0,0.3)',
@@ -173,13 +175,13 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
                 onStop={(e, data) => onPositionChange(sound.id, { x: data.x, y: data.y })}
                 bounds="parent"
             >
-                <div ref={nodeRef} style={{ position: 'absolute' }}>{content}</div>
+                <div ref={nodeRef} style={{ position: 'absolute', zIndex: zIndexVal }}>{content}</div>
             </Draggable>
         );
     }
 
     return (
-        <div style={{ position: 'absolute', left: position.x, top: position.y, touchAction: 'none' }}>
+        <div style={{ position: 'absolute', left: position.x, top: position.y, touchAction: 'none', zIndex: zIndexVal }}>
             {content}
         </div>
     );
