@@ -1,36 +1,37 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { IconDrum, IconEdit, IconSettings, IconLayer, IconChoke, IconFolder, IconPlus } from './Icons';
 
 const HelpModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     const sections = [
         {
-            title: "🥁 Playing",
+            title: <><IconDrum size={20} color="#d4af37" /> Playing</>,
             content: "Tap any pad to play sound. Use your keyboard keys (mapped on each pad) for desktop play."
         },
         {
-            title: "✏️ Edit Mode",
+            title: <><IconEdit size={20} color="#d4af37" /> Edit Mode</>,
             content: "Open the Menu and toggle 'Edit Mode' to unlock the studio. In this mode, you can drag pads to move them and resize them using the slider in settings."
         },
         {
-            title: "⚙️ Pad Settings",
+            title: <><IconSettings size={20} color="#d4af37" /> Pad Settings</>,
             content: "In Edit Mode, tap the Gear icon on any pad. Here you can change the sound file, volume, pitch, and keybind."
         },
         {
-            title: "🥞 Layering (Stacking)",
+            title: <><IconLayer size={20} color="#d4af37" /> Layering (Stacking)</>,
             content: "Want to stack a Snare on top of a Kick? Use the 'Layer Order' controls in Pad Settings. Higher numbers sit on top of lower numbers."
         },
         {
-            title: "✂️ Hi-Hat Choke (Mute Groups)",
+            title: <><IconChoke size={20} color="#d4af37" /> Hi-Hat Choke (Mute Groups)</>,
             content: "To make a closed Hi-Hat cut off an open Hi-Hat, assign them both to the SAME 'Mute Group' number in Pad Settings (e.g. Group 1)."
         },
         {
-            title: "💾 Presets",
+            title: <><IconFolder size={20} color="#d4af37" /> Presets</>,
             content: "Save your custom layouts and kits! Open the Menu -> Presets to save your current setup or load a previous one."
         },
         {
-            title: "➕ Adding Pads",
+            title: <><IconPlus size={20} color="#d4af37" /> Adding Pads</>,
             content: "In Edit Mode, use the floating '+' button to add new pads (Kicks, Snares, Cymbals, etc.) to your kit."
         }
     ];

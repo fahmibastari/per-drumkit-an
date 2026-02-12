@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { IconFolder } from './Icons';
 
 const PadSettingsModal = ({ isOpen, onClose, pad, onUpdate, onDelete, onOpenSoundSelector, onUpdateSize, currentSize }) => {
     if (!isOpen || !pad) return null;
@@ -101,7 +102,7 @@ const PadSettingsModal = ({ isOpen, onClose, pad, onUpdate, onDelete, onOpenSoun
                                 onMouseOver={e => e.currentTarget.style.background = '#444'}
                                 onMouseOut={e => e.currentTarget.style.background = '#333'}
                             >
-                                📂
+                                <IconFolder size={18} />
                             </button>
                         </div>
                     </div>

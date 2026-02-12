@@ -71,3 +71,39 @@ export const IconHelp = ({ size = 24, color = "currentColor" }) => (
         <line x1="12" y1="17" x2="12.01" y2="17"></line>
     </svg>
 );
+
+export const IconDrum = ({ size = 24, color = "currentColor" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2l-9.5 5.5v11L12 24l9.5-5.5v-11z"></path>
+        <ellipse cx="12" cy="7.5" rx="9.5" ry="5.5"></ellipse>
+    </svg>
+);
+
+export const IconEdit = ({ size = 24, color = "currentColor" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+    </svg>
+);
+
+export const IconLayer = ({ size = 24, color = "currentColor" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+        <polyline points="2 17 12 22 22 17"></polyline>
+        <polyline points="2 12 12 17 22 12"></polyline>
+    </svg>
+);
+
+export const IconChoke = ({ size = 24, color = "currentColor" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 9l6 6 6-6"></path>
+    </svg>
+);
+
+export const IconSave = ({ size = 24, color = "currentColor" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+        <polyline points="7 3 7 8 15 8"></polyline>
+    </svg>
+);
