@@ -156,6 +156,19 @@ const PadSettingsModal = ({ isOpen, onClose, pad, onUpdate, onDelete, onOpenSoun
                             style={{ width: '100%', cursor: 'pointer', accentColor: '#d4af37' }}
                         />
                     </div>
+                    {/* Layering (Z-Index) */}
+                    <div style={{ marginBottom: '25px' }}>
+                        <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                            Layer Order: {pad.zIndex || 10}
+                        </label>
+                        <input
+                            type="range"
+                            min="1" max="50" step="1"
+                            value={pad.zIndex || 10}
+                            onChange={(e) => onUpdate(pad.id, { zIndex: parseInt(e.target.value) })}
+                            style={{ width: '100%', cursor: 'pointer', accentColor: '#d4af37' }}
+                        />
+                    </div>
 
                     {/* Actions */}
                     <div style={{ display: 'flex', gap: '10px' }}>

@@ -21,7 +21,7 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
         height: `${size}px`,
         backgroundColor: isActive ? '#d4af37' : '#1e1e1e', // Gold when active, Matte Dark Grey default
         border: isActive ? '1px solid #d4af37' : '1px solid #333',
-        borderRadius: '12px',
+        borderRadius: '50%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -29,7 +29,7 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
         cursor: editMode ? 'grab' : 'pointer',
         userSelect: 'none',
         touchAction: 'none',
-        zIndex: isActive ? 100 : 10,
+        zIndex: (sound.zIndex || 10) + (isActive ? 1000 : 0),
         boxShadow: isActive
             ? '0 0 20px rgba(212, 175, 55, 0.4)'
             : '0 4px 6px rgba(0,0,0,0.3)',
@@ -60,7 +60,7 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
                 width: '80%',
                 height: '80%',
                 border: '1px solid rgba(255,255,255,0.05)',
-                borderRadius: '8px',
+                borderRadius: '50%',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -80,23 +80,27 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
 
                 <span style={{
                     color: isActive ? '#000' : '#eee',
-                    fontWeight: '500',
-                    fontSize: '0.9rem',
-                    marginBottom: '4px',
+                    fontWeight: '600',
+                    fontSize: '0.7rem',
+                    marginBottom: '2px',
                     letterSpacing: '1px',
                     fontFamily: 'Inter, sans-serif',
                     textTransform: 'uppercase',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    maxWidth: '90%',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis'
                 }}>
                     {sound.label}
                 </span>
 
                 {sound.fileName && (
                     <span style={{
-                        fontSize: '0.6rem',
+                        fontSize: '0.5rem',
                         color: isActive ? '#333' : '#666',
-                        marginBottom: '4px',
-                        maxWidth: '90%',
+                        marginBottom: '2px',
+                        maxWidth: '85%',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
@@ -110,7 +114,7 @@ const DrumPad = forwardRef(({ sound, play, mappedKey, editMode, onPositionChange
                 <div style={{
                     position: 'absolute',
                     bottom: '8px',
-                    fontSize: '0.7rem',
+                    fontSize: '0.6rem',
                     color: isActive ? '#000' : '#444',
                     fontFamily: 'monospace',
                     fontWeight: 'bold',

@@ -311,6 +311,7 @@ const DrumMachine = () => {
                 onOpenSoundSelector={(id) => {
                     // Let's close settings, open selector.
                     setSettingsPadId(null);
+                    setSelectorPadId(id);
                 }}
                 onUpdateSize={updatePadSize}
                 currentSize={settingsPadId ? (padSizes[settingsPadId] || 120) : 120}
