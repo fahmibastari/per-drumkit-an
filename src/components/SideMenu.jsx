@@ -2,12 +2,12 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     IconFolder, IconSettings, IconPlus, IconRefresh,
-    IconTrash, IconCheck, IconClose
+    IconTrash, IconCheck, IconClose, IconHelp
 } from './Icons';
 
 const SideMenu = ({
     isOpen, onClose, editMode, setEditMode,
-    onOpenPresets, onOpenAddPad, onClear, onReset
+    onOpenPresets, onOpenAddPad, onOpenHelp, onClear, onReset
 }) => {
 
     // Helper for menu items
@@ -95,6 +95,8 @@ const SideMenu = ({
                                 <>
                                     <MenuItem onClick={onOpenPresets} label="Presets" icon={<IconFolder size={20} color="#d4af37" />} color="#d4af37" />
                                     <MenuItem onClick={() => setEditMode(true)} label="Edit Layout" icon={<IconSettings size={20} />} />
+                                    <div style={{ borderTop: '1px solid #333', margin: '10px 0' }}></div>
+                                    <MenuItem onClick={onOpenHelp} label="Studio Guide" icon={<IconHelp size={20} color="#fff" />} color="#fff" />
                                 </>
                             ) : (
                                 <>

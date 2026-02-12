@@ -193,9 +193,12 @@ const PadSettingsModal = ({ isOpen, onClose, pad, onUpdate, onDelete, onOpenSoun
 
                     {/* Mute Group (Choke) */}
                     <div style={{ marginBottom: '25px' }}>
-                        <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                        <label style={{ display: 'block', color: '#888', marginBottom: '4px', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
                             Mute Group (Choke)
                         </label>
+                        <div style={{ fontSize: '0.65rem', color: '#666', marginBottom: '8px', fontStyle: 'italic' }}>
+                            *Pads in the same group cut each other off (e.g. Open/Close Hat).
+                        </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#111', padding: '5px', borderRadius: '4px', border: '1px solid #333' }}>
                             <button
                                 onClick={() => onUpdate(pad.id, { muteGroup: Math.max(0, (pad.muteGroup || 0) - 1) })}

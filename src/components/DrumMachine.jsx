@@ -7,6 +7,7 @@ import AddPadWizard from './AddPadWizard';
 import PresetManagerModal from './PresetManagerModal';
 import SideMenu from './SideMenu';
 import { IconMenu, IconCheck, IconPlus } from './Icons';
+import HelpModal from './HelpModal';
 
 const PAD_COLORS = {
     kick: '#ff0055',    // Pink
@@ -48,6 +49,7 @@ const DrumMachine = () => {
     const [isAddWizardOpen, setIsAddWizardOpen] = useState(false);
     const [isPresetModalOpen, setIsPresetModalOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
 
     const padRefs = useRef({});
 
@@ -332,6 +334,11 @@ const DrumMachine = () => {
                 onDelete={deletePreset}
             />
 
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+            />
+
             <SideMenu
                 isOpen={isMenuOpen}
                 onClose={() => setIsMenuOpen(false)}
@@ -339,6 +346,7 @@ const DrumMachine = () => {
                 setEditMode={setEditMode}
                 onOpenPresets={() => setIsPresetModalOpen(true)}
                 onOpenAddPad={() => setIsAddWizardOpen(true)}
+                onOpenHelp={() => setIsHelpOpen(true)}
                 onClear={handleClear}
                 onReset={handleReset}
             />
