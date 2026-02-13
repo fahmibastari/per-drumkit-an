@@ -47,15 +47,16 @@ export const useAudio = () => {
 
                 // Generate synthetic impulse response
                 const sampleRate = ctx.sampleRate;
-                const duration = 2; // 2 second reverb tail
+                const duration = 0.8; // Shorter reverb tail for lower latency
                 const length = sampleRate * duration;
                 const impulse = ctx.createBuffer(2, length, sampleRate);
 
                 for (let channel = 0; channel < 2; channel++) {
                     const channelData = impulse.getChannelData(channel);
                     for (let i = 0; i < length; i++) {
-                        // Exponential decay with random noise
-                        channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
+                        // Simpler exponential decay for less processing
+                        const decay = Math.pow(1 - i / length, 3);
+                        channelData[i] = (Math.random() * 2 - 1) * decay * 0.5;
                     }
                 }
                 convolver.buffer = impulse;
