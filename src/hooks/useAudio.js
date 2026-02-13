@@ -31,50 +31,66 @@ export const useAudio = () => {
     // Initialize Web Audio API for reverb
     useEffect(() => {
         try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            const ctx = new AudioContext();
-            audioContextRef.current = ctx;
-
-            // Create convolver for reverb
-            const convolver = ctx.createConvolver();
-            convolverRef.current = convolver;
-
-            // Generate synthetic impulse response
-            const sampleRate = ctx.sampleRate;
-            const duration = 2; // 2 second reverb tail
-            const length = sampleRate * duration;
-            const impulse = ctx.createBuffer(2, length, sampleRate);
-
-            for (let channel = 0; channel < 2; channel++) {
-                const channelData = impulse.getChannelData(channel);
-                for (let i = 0; i < length; i++) {
-                    // Exponential decay with random noise
-                    channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
+            // Wait for Howler to initialize its context
+            const initReverb = () => {
+                if (!Howl || !Howl.ctx) {
+                    setTimeout(initReverb, 100);
+                    return;
                 }
-            }
-            convolver.buffer = impulse;
 
-            // Create dry/wet gain nodes
-            const dryGain = ctx.createGain();
-            const wetGain = ctx.createGain();
-            dryGainRef.current = dryGain;
-            wetGainRef.current = wetGain;
+                const ctx = Howl.ctx;
+                audioContextRef.current = ctx;
 
-            // Connect: Howler -> dry -> destination
-            //                 -> wet -> convolver -> destination
-            dryGain.connect(ctx.destination);
-            wetGain.connect(convolver);
-            convolver.connect(ctx.destination);
+                // Create convolver for reverb
+                const convolver = ctx.createConvolver();
+                convolverRef.current = convolver;
 
-            // Set initial gains (0% reverb)
-            dryGain.gain.value = 1.0;
-            wetGain.gain.value = 0.0;
+                // Generate synthetic impulse response
+                const sampleRate = ctx.sampleRate;
+                const duration = 2; // 2 second reverb tail
+                const length = sampleRate * duration;
+                const impulse = ctx.createBuffer(2, length, sampleRate);
 
-            // Load saved reverb amount
-            const savedReverb = localStorage.getItem('reverbAmount');
-            if (savedReverb !== null) {
-                setReverbAmountState(parseFloat(savedReverb));
-            }
+                for (let channel = 0; channel < 2; channel++) {
+                    const channelData = impulse.getChannelData(channel);
+                    for (let i = 0; i < length; i++) {
+                        // Exponential decay with random noise
+                        channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
+                    }
+                }
+                convolver.buffer = impulse;
+
+                // Create dry/wet gain nodes
+                const dryGain = ctx.createGain();
+                const wetGain = ctx.createGain();
+                dryGainRef.current = dryGain;
+                wetGainRef.current = wetGain;
+
+                // CRITICAL: Disconnect Howler's master from destination
+                // and route through our reverb chain
+                const masterGain = Howl.masterGain;
+                masterGain.disconnect();
+
+                // Connect: Howler.masterGain -> [dry -> destination, wet -> convolver -> destination]
+                masterGain.connect(dryGain);
+                masterGain.connect(wetGain);
+
+                dryGain.connect(ctx.destination);
+                wetGain.connect(convolver);
+                convolver.connect(ctx.destination);
+
+                // Set initial gains (0% reverb)
+                dryGain.gain.value = 1.0;
+                wetGain.gain.value = 0.0;
+
+                // Load saved reverb amount
+                const savedReverb = localStorage.getItem('reverbAmount');
+                if (savedReverb !== null) {
+                    setReverbAmountState(parseFloat(savedReverb));
+                }
+            };
+
+            initReverb();
         } catch (err) {
             console.error('Failed to initialize Web Audio API:', err);
         }
