@@ -20,6 +20,65 @@ export const useAudio = () => {
     const [sounds, setSounds] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [presets, setPresets] = useState([]);
+    const [reverbAmount, setReverbAmountState] = useState(0);
+
+    // Web Audio API refs for reverb
+    const audioContextRef = useRef(null);
+    const convolverRef = useRef(null);
+    const dryGainRef = useRef(null);
+    const wetGainRef = useRef(null);
+
+    // Initialize Web Audio API for reverb
+    useEffect(() => {
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioContext();
+            audioContextRef.current = ctx;
+
+            // Create convolver for reverb
+            const convolver = ctx.createConvolver();
+            convolverRef.current = convolver;
+
+            // Generate synthetic impulse response
+            const sampleRate = ctx.sampleRate;
+            const duration = 2; // 2 second reverb tail
+            const length = sampleRate * duration;
+            const impulse = ctx.createBuffer(2, length, sampleRate);
+
+            for (let channel = 0; channel < 2; channel++) {
+                const channelData = impulse.getChannelData(channel);
+                for (let i = 0; i < length; i++) {
+                    // Exponential decay with random noise
+                    channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
+                }
+            }
+            convolver.buffer = impulse;
+
+            // Create dry/wet gain nodes
+            const dryGain = ctx.createGain();
+            const wetGain = ctx.createGain();
+            dryGainRef.current = dryGain;
+            wetGainRef.current = wetGain;
+
+            // Connect: Howler -> dry -> destination
+            //                 -> wet -> convolver -> destination
+            dryGain.connect(ctx.destination);
+            wetGain.connect(convolver);
+            convolver.connect(ctx.destination);
+
+            // Set initial gains (0% reverb)
+            dryGain.gain.value = 1.0;
+            wetGain.gain.value = 0.0;
+
+            // Load saved reverb amount
+            const savedReverb = localStorage.getItem('reverbAmount');
+            if (savedReverb !== null) {
+                setReverbAmountState(parseFloat(savedReverb));
+            }
+        } catch (err) {
+            console.error('Failed to initialize Web Audio API:', err);
+        }
+    }, []);
 
     // Initial Load
     useEffect(() => {
@@ -80,11 +139,22 @@ export const useAudio = () => {
             if (!existing || currentSrc !== sound.src) {
                 if (existing) existing.unload();
 
-                howlsRef.current[sound.id] = new Howl({
+                const howl = new Howl({
                     src: [sound.src],
                     volume: effectiveVol,
                     preload: true
                 });
+
+                // Connect to Web Audio API if available
+                if (audioContextRef.current && dryGainRef.current && wetGainRef.current) {
+                    const ctx = audioContextRef.current;
+                    // Resume context if suspended (browser autoplay policy)
+                    if (ctx.state === 'suspended') {
+                        ctx.resume();
+                    }
+                }
+
+                howlsRef.current[sound.id] = howl;
                 sourcesRef.current[sound.id] = sound.src;
             } else {
                 // Determine if volume changed and update it
@@ -201,6 +271,27 @@ export const useAudio = () => {
         localStorage.setItem('userKitPresets', JSON.stringify(updatedPresets));
     };
 
+    // Reverb control
+    const setReverbAmount = useCallback((amount) => {
+        const clampedAmount = Math.max(0, Math.min(100, amount));
+        setReverbAmountState(clampedAmount);
+        localStorage.setItem('reverbAmount', clampedAmount.toString());
+
+        // Update dry/wet mix
+        if (dryGainRef.current && wetGainRef.current) {
+            const wet = clampedAmount / 100;
+            const dry = 1 - (wet * 0.5); // Keep some dry signal even at 100%
+
+            dryGainRef.current.gain.value = dry;
+            wetGainRef.current.gain.value = wet * 0.8; // Scale wet to prevent clipping
+        }
+    }, []);
+
+    // Apply reverb amount when it changes
+    useEffect(() => {
+        setReverbAmount(reverbAmount);
+    }, [reverbAmount, setReverbAmount]);
+
     return {
         sounds,
         playSound,
@@ -213,6 +304,8 @@ export const useAudio = () => {
         presets,
         savePreset,
         loadPreset,
-        deletePreset
+        deletePreset,
+        reverbAmount,
+        setReverbAmount
     };
 };

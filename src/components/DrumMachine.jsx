@@ -8,6 +8,7 @@ import PresetManagerModal from './PresetManagerModal';
 import SideMenu from './SideMenu';
 import { IconMenu, IconCheck, IconPlus } from './Icons';
 import HelpModal from './HelpModal';
+import EffectsModal from './EffectsModal';
 
 const PAD_COLORS = {
     kick: '#ff0055',    // Pink
@@ -29,7 +30,8 @@ const DrumMachine = () => {
     const {
         sounds, playSound, updatePadSettings, addPad, removePad,
         clearKit, resetToDefault, isLoaded,
-        presets, savePreset, loadPreset, deletePreset
+        presets, savePreset, loadPreset, deletePreset,
+        reverbAmount, setReverbAmount
     } = useAudio();
     const [editMode, setEditMode] = useState(false);
     const [positions, setPositions] = useState({});
@@ -50,6 +52,7 @@ const DrumMachine = () => {
     const [isPresetModalOpen, setIsPresetModalOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isHelpOpen, setIsHelpOpen] = useState(false);
+    const [isEffectsOpen, setIsEffectsOpen] = useState(false);
 
     const padRefs = useRef({});
 
@@ -339,6 +342,13 @@ const DrumMachine = () => {
                 onClose={() => setIsHelpOpen(false)}
             />
 
+            <EffectsModal
+                isOpen={isEffectsOpen}
+                onClose={() => setIsEffectsOpen(false)}
+                reverbAmount={reverbAmount}
+                setReverbAmount={setReverbAmount}
+            />
+
             <SideMenu
                 isOpen={isMenuOpen}
                 onClose={() => setIsMenuOpen(false)}
@@ -347,6 +357,7 @@ const DrumMachine = () => {
                 onOpenPresets={() => setIsPresetModalOpen(true)}
                 onOpenAddPad={() => setIsAddWizardOpen(true)}
                 onOpenHelp={() => setIsHelpOpen(true)}
+                onOpenEffects={() => setIsEffectsOpen(true)}
                 onClear={handleClear}
                 onReset={handleReset}
             />
