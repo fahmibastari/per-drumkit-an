@@ -62,6 +62,8 @@ const PadSettingsModal = ({ isOpen, onClose, pad, onUpdate, onDelete, onOpenSoun
                         padding: '2rem',
                         borderRadius: '4px',
                         width: '320px',
+                        maxHeight: '90vh',
+                        overflowY: 'auto',
                         pointerEvents: 'auto',
                         boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
                         position: 'relative',
